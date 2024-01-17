@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // This is equivalent of Try/Catch or .then in JavaScript
 // Basic Syntax:
@@ -53,6 +56,17 @@ func (e userError) Error() string {
 // 	...
 // }
 
+// //////////// ERRORS PACKAGE ///////////
+// This makes it easy to handle new errors/
+// There is no need to create an Error interface or struct now
+var err error = errors.New("something went wrong")
+
+func divide(x, y float64) (float64, error) {
+	if y == 0 {
+		return 0.0, errors.New(("Problem: Y == 0"))
+	}
+	return x / y, nil
+}
 func main() {
 	// Give the parameters a value
 	msgToCustomer := "Hello Customer!"
@@ -63,8 +77,20 @@ func main() {
 		fmt.Println("Error", err)
 		return
 	}
+	/////////////// error package usage ////////
+	x := 10.0
+	y := 0.0
+	result, err := divide(x, y)
+	if err != nil {
+		fmt.Println("Error message -->", err)
+		return
+	}
+
 	////////////////// PRINT STATEMENTS ////////
 	fmt.Println("------- Errors -------")
 	fmt.Printf("Total cost for the couple: $%.4f\n", cost)
+	fmt.Println("Error Package", err)
+	/////////////// error package print /////////
+	fmt.Println("The result of the function divide() is : ", result)
 
 }
