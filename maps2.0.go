@@ -1,9 +1,69 @@
 package main
 
+// Any data type could be used as a Value but not every data type can be used as a map key
+// Keys can be something comparable for equality eg: bool, int, string, structs
+// What is not comparable for type equality is slices, maps and functions :- These are pointers and not values themselves
+
 import (
 	"errors"
 	"fmt"
+	"strconv"
 )
+
+func getCounts(userIDs []string) map[string]int {
+	// create a data type for return -> in this case a new map
+	counts := make(map[string]int)
+	// loop over all of user Ids
+	for _, userID := range userIDs {
+		// check if the value for a map in the given user already exist
+		count := counts[userID]
+		// If Yes add it to the value
+		count++
+		// Now save it to userID
+		counts[userID] = count
+		// if not then add it as a new entry
+	}
+	return counts
+}
+
+// ///////////////////////////////////////
+// Create a function that calculates the sum of all the digits
+func calcTotalOfInts(n int) int {
+	strNum := strconv.Itoa(n)
+	var total int
+	// fmt.Println("StrNum : ", strNum)
+	fmt.Println("Number : ", n)
+
+	//// If for checking the len of int is more than one
+	if len(strNum) > 1 {
+		// Make the int into a slice
+		digitSlice := make([]int, len(strNum))
+		// Iterate over the int and fill digits in slice
+		for i, digitStr := range strNum {
+			digit, _ := strconv.Atoi(string(digitStr))
+			// Now put the values inside the newly created slice
+			digitSlice[i] = digit
+			total += digitSlice[i]
+
+		}
+		fmt.Println("Initial Total : ", total)
+		// Now check if len(total) > 1
+		// Now for to continue uptill the answer becomes a single digit
+		for len(strconv.Itoa(total)) > 1 {
+			var newTotal int
+			// Iterate over the total and fill digits
+			for _, digitStr := range strconv.Itoa(total) {
+				digits, _ := strconv.Atoi(string(digitStr))
+				newTotal += digits
+			}
+			total = newTotal
+		}
+		// repeat to reduce it to a total of 1 digit
+		fmt.Println("Final Total :-->", total)
+	}
+	return total
+
+}
 
 type user struct {
 	name                string
@@ -64,5 +124,27 @@ func main() {
 	for key, value := range users {
 		fmt.Println(key, " : ", value)
 	}
+	//////////////////////////////////
+	names := []string{"Hameer", "Rajat", "Jabar", "Jabar"}
+	fmt.Println(getCounts(names))
+
+	////////////////////////////
+	fmt.Println("------------------------")
+
+	a := 123
+	b := 123456789
+	c := 9999999999999982
+	// b := len(strconv.Itoa(a))
+	// fmt.Println("Type of b : ", reflect.TypeOf(b))
+	// if b > 1 {
+	// 	fmt.Println("Success")
+	// } else {
+	// 	fmt.Println("Fail")
+	// }
+	calcTotalOfInts(a)
+	fmt.Println("------------------------")
+	calcTotalOfInts(b)
+	fmt.Println("------------------------")
+	calcTotalOfInts(c)
 
 }
